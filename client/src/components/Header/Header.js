@@ -16,7 +16,7 @@ function Header() {
         </div>
         <div className="page-links">
           <NavLink to="/">HOME</NavLink>
-          <NavLink to="/Products">MENU</NavLink>
+          <NavLink to="/Menu">MENU</NavLink>
           <NavLink to="/About">ABOUT</NavLink>
         </div>
         <div className="options">

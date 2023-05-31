@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-import HomePage from "./pages/homePage/HomePage";
+import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
+import Menu from "./pages/Menu/Menu";
 
 function App() {
   const [cart, setCart] = useState(() => {
@@ -10,15 +11,13 @@ function App() {
     return localCart ? JSON.parse(localCart) : [];
   });
 
+  console.log(cart);
   return (
     <Router>
       <Header />
       <Routes>
-        <Route
-          exact
-          path="/"
-          element={<HomePage cart={cart} setCart={setCart} />}
-        />
+        <Route path="/" element={<HomePage cart={cart} setCart={setCart} />} />
+        <Route path="/Menu" element={<Menu cart={cart} setCart={setCart} />} />
       </Routes>
     </Router>
   );
