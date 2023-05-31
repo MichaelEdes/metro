@@ -1,10 +1,18 @@
-.bg {
+.home-page-container {
+  margin-top: 10vh;
   background-color: rgb(20, 20, 20);
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   text-align: center;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+}
+
+@media (max-width: 765px) {
+  .home-page-container {
+    padding: 0;
+  }
 }

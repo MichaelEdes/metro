@@ -1,0 +1,69 @@
+.nav-bar {
+  width: 100%;
+  height: 10vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 2rem;
+  z-index: 10000;
+  color: white;
+  background-color: black;
+}
+
+.logo a {
+  font-size: clamp(2rem, 3vw, 2rem);
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  text-decoration: none;
+  color: white;
+}
+
+.logo a span {
+  color: gold;
+}
+
+.page-links {
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 3vw;
+}
+
+.page-links a {
+  text-decoration: none;
+  color: white;
+}
+
+.page-links .active {
+  color: #ffd800;
+}
+
+.page-links a:hover {
+  color: #ffd800;
+}
+
+.options {
+  display: flex;
+  justify-content: end;
+  gap: 1vw;
+}
+
+.options svg:hover {
+  color: #ffd800;
+  cursor: pointer;
+}
+
+#account-btn {
+  color: white;
+}
+
+#account-btn:hover {
+  color: #ffd800;
+}

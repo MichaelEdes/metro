@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./HomePage.css";
+import ImageCarousel from "../../components/ImageCarousel/ImageCarousel";
 
-function HomePage() {
+function HomePage({ cart, setCart }) {
   return (
-    <div className="bg">
-      <h1>Home</h1>
+    <div className="home-page-container">
+      <ImageCarousel cart={cart} setCart={setCart} />
     </div>
   );
 }
