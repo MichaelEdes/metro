@@ -6,6 +6,7 @@ import Header from "./components/Header/Header";
 import Menu from "./pages/Menu/Menu";
 import ShoppingCart from "./components/ShoppingCart/ShoppingCart";
 import About from "./pages/About/About";
+import Login from "./pages/Login/Login";
 
 function App() {
   const [cart, setCart] = useState(() => {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/" element={<HomePage cart={cart} setCart={setCart} />} />
         <Route path="/Menu" element={<Menu cart={cart} setCart={setCart} />} />
         <Route path="/About" element={<About />} />
+        <Route path="/Login" element={<Login />} />
       </Routes>
     </Router>
   );

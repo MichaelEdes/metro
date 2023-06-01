@@ -32,7 +32,7 @@ function Header({ setCartOpen, isCartOpen, cart }) {
           <NavLink to="/About">ABOUT</NavLink>
         </div>
         <div className="options">
-          <NavLink to="/Account">
+          <NavLink to="/Login">
             <PersonSharpIcon id="account-btn" />
           </NavLink>
           <div className="cart-icon">
