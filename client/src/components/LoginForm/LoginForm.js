@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import "./LoginForm.css";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [signUp, setSignUp] = useState(true);
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate("/Account");
+  };
 
   return (
     <div className="login-form-container">
@@ -46,7 +52,7 @@ function LoginForm() {
               <input type="password" placeholder="Password" />
             </section>
           )}
-          <button>{signUp ? "Sign Up" : "Login"}</button>
+          <button onClick={handleLogin}>{signUp ? "Sign Up" : "Login"}</button>
         </div>
       </div>
     </div>

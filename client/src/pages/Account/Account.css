@@ -1,0 +1,127 @@
+.account-page-container {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  height: 90vh;
+  width: 100%;
+  margin: 10vh auto 0 auto;
+  flex-direction: column;
+  background-color: rgb(12, 12, 13);
+}
+
+.account-details {
+  width: 80%;
+  display: flex;
+  align-items: top;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 5vh;
+  color: white;
+}
+
+.account-details img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.account-list-options {
+  display: flex;
+  align-items: start;
+  margin: 2rem 0 0 0;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab-options {
+  height: clamp(60vh, 80rem, 100%);
+  border-radius: 20px 0 0 20px;
+  background-color: gold;
+}
+
+.tab-options button {
+  color: black;
+}
+
+.cart-item-box {
+  background-color: white;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 60vh;
+  width: clamp(40%, 20vw, 80rem);
+  overflow: scroll;
+  border-radius: 0px 20px 20px 0;
+  position: relative;
+  padding: 0;
+}
+
+.items-container {
+  height: 100%;
+  overflow: scroll;
+  padding: 0.5rem 2rem 3rem 2rem;
+}
+
+.Mui-selected {
+  background-color: white !important;
+  color: black !important;
+}
+
+.MuiTabs-indicator {
+  display: none;
+}
+
+.items-container::-webkit-scrollbar {
+  display: none;
+}
+
+cart-items-box-list {
+  height: 80%;
+}
+
+#logout {
+  margin-top: auto;
+  background-color: red;
+}
+
+.MuiTabs-flexContainerVertical {
+  height: 100%;
+}
+
+.MuiBox-root {
+  position: relative;
+}
+
+.complete-order {
+  background-color: aqua;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: gold;
+}
+
+#complete-order-btn {
+  background-color: greenyellow;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  width: 40%;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.order-summary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}

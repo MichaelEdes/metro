@@ -1,0 +1,24 @@
+.cart-item {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr;
+  gap: 20px;
+  justify-content: space-between;
+  min-height: 80px;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.cart-item img {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 30px;
+}
+
+.cart-item h2 {
+  font-size: medium;
+}
+
+.cart-item p {
+  font-size: small;
+}

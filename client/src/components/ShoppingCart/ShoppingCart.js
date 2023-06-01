@@ -4,9 +4,12 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../UserContext";
+import { CartContext } from "../../CartContext"; // Import the context
+import CartItem from "../CartItem/CartItem";
 
-function ShoppingCart({ cart, setCart, setCartOpen, isCartOpen }) {
+function ShoppingCart({ setCartOpen, isCartOpen }) {
   const { isLoggedIn } = useContext(UserContext);
+  const { cart, setCart } = useContext(CartContext); // Access the context
 
   const navigate = useNavigate();
 
@@ -47,43 +50,40 @@ function ShoppingCart({ cart, setCart, setCartOpen, isCartOpen }) {
   };
 
   return (
-    <div className={`cart-container ${!isCartOpen && "is-active"}`}>
-      <div className="cart-header">
-        <div className="cart-options">
-          <h1>Cart</h1>
-          <ExitToAppIcon
-            id="close-cart"
-            onClick={() => setCartOpen(!isCartOpen)}
-          />
-        </div>
-        <p>You have {calculateTotalQuantity()} item(s) in your cart</p>
-      </div>
-      <div className="cart">
-        {cart.map((item, index) => (
-          <div className="cart-item" key={index}>
-            <div>
-              <img src={item.image} alt={item.title} />
-            </div>
-            <div>
-              <h2>{item.title}</h2>
-              <p>
-                <strong>
-                  <span>£{item.price}</span>
-                </strong>{" "}
-                x <strong>{item.quantity}</strong>
-              </p>
-            </div>
-            <div id="delete-btn" onClick={() => deleteItem(index)}>
-              <CancelIcon />
-            </div>
+    <>
+      <div
+        onClick={() => setCartOpen(!isCartOpen)}
+        className={`overlay ${!isCartOpen && "is-active overlay-active"}`}
+      />
+      <div className={`cart-container ${!isCartOpen && "is-active"}`}>
+        <div className="cart-header">
+          <div className="cart-options">
+            <h1>Cart</h1>
+            <ExitToAppIcon
+              id="close-cart"
+              onClick={() => setCartOpen(!isCartOpen)}
+            />
           </div>
-        ))}
+          <p>You have {calculateTotalQuantity()} item(s) in your cart</p>
+        </div>
+        <div className="cart">
+          {cart.map((item, index) => (
+            <CartItem
+              key={index}
+              title={item.title}
+              image={item.image}
+              index={index}
+              price={item.price}
+              quantity={item.quantity}
+            />
+          ))}
+        </div>
+        <div className="checkout">
+          <h2>Total: £{calculateTotal().toFixed(2)}</h2>
+          <button onClick={handleCheckout}>Checkout</button>
+        </div>
       </div>
-      <div className="checkout">
-        <h2>Total: £{calculateTotal().toFixed(2)}</h2>
-        <button onClick={handleCheckout}>Checkout</button>
-      </div>
-    </div>
+    </>
   );
 }
 

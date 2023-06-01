@@ -1,14 +1,15 @@
 .cart-container {
   position: fixed;
-  right: -100%;
+  right: -100vw;
   top: 0;
   height: 100vh;
   background-color: white;
   z-index: 99999;
-  width: 30%;
+  width: clamp(1%, 100%, 30rem);
   padding: 1rem;
   transition: 0.5s;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  box-sizing: border-box;
 }
 
 .cart-options {
@@ -44,26 +45,10 @@
 .cart {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   height: 70%;
   max-height: 80%;
   padding: 1rem 0;
   overflow-y: scroll;
-}
-
-.cart-item {
-  display: grid;
-  grid-template-columns: 2fr 3fr 1fr;
-  gap: 20px;
-  justify-content: space-between;
-  min-height: 80px;
-}
-
-.cart-item img {
-  width: 120px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 30px;
 }
 
 #delete-btn {
@@ -79,15 +64,6 @@
   color: red;
   transition: 0.5s;
 }
-
-.cart-item h2 {
-  font-size: medium;
-}
-
-.cart-item p {
-  font-size: small;
-}
-
 .checkout {
   display: flex;
   flex-direction: row;
@@ -97,7 +73,26 @@
   padding: 2rem 0;
 }
 
+.overlay {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background-color: rgba(4, 4, 4);
+  right: -100%;
+  top: 0;
+  z-index: 99999;
+  transition: 0.5s;
+  opacity: 0;
+}
+
 .is-active {
   right: 0;
   transition: 0.5s;
+  display: block;
+}
+
+.overlay-active {
+  opacity: 0.5;
+  transition: 0.5s;
+  right: 0;
 }
