@@ -57,7 +57,7 @@ export const content = [
     allergens: ["Gluten", "Dairy", "Soy"],
     price: 6.79,
     image:
-      "https://rare-gallery.com/uploads/posts/863783-Butterbrot-Sandwich-Sausage-Cheese-Tomatoes.jpg",
+      "https://assets.gqindia.com/photos/62458b8e21b835d59a335a73/16:9/pass/Top-image-05.jpg",
   },
   {
     title: "French Dip Sandwich",
