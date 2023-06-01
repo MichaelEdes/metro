@@ -78,3 +78,28 @@
   background-color: #ffd800;
   width: 50%;
 }
+
+.back-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  gap: 0px;
+  cursor: pointer;
+}
+
+.back-btn a {
+  color: white;
+}
+
+.back-btn svg {
+  transition: 0.5s;
+  color: #ffd800;
+}
+
+.back-btn:hover svg {
+  transform: translateX(-10px);
+  transition: 0.5s;
+}

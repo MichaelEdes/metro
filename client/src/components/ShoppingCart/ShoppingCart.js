@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./ShoppingCart.css";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../UserContext";
 
 function ShoppingCart({ cart, setCart, setCartOpen, isCartOpen }) {
+  const { isLoggedIn } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
   const changeQuantity = (index, event) => {
     const newCart = [...cart];
     newCart[index].quantity = event.target.value;
@@ -30,6 +36,16 @@ function ShoppingCart({ cart, setCart, setCartOpen, isCartOpen }) {
       0
     );
   };
+
+  const handleCheckout = () => {
+    setCartOpen(true);
+    if (isLoggedIn) {
+      navigate("/Checkout");
+    } else {
+      navigate("/Login");
+    }
+  };
+
   return (
     <div className={`cart-container ${!isCartOpen && "is-active"}`}>
       <div className="cart-header">
@@ -65,9 +81,7 @@ function ShoppingCart({ cart, setCart, setCartOpen, isCartOpen }) {
       </div>
       <div className="checkout">
         <h2>Total: £{calculateTotal().toFixed(2)}</h2>
-        <button>
-          <a href="/Login">Checkout</a>
-        </button>
+        <button onClick={handleCheckout}>Checkout</button>
       </div>
     </div>
   );

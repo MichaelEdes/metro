@@ -1,10 +1,10 @@
 import React from "react";
-import LoginForm from "../../components/LoginForm/LoginForm";
 import "./Login.css";
+import LoginForm from "../../components/LoginForm/LoginForm";
 
 function Login() {
   return (
-    <div className="login-form-container">
+    <div className="login-form">
       <LoginForm />
     </div>
   );
