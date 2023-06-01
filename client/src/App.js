@@ -4,6 +4,8 @@ import "./App.css";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
 import Menu from "./pages/Menu/Menu";
+import ShoppingCart from "./components/ShoppingCart/ShoppingCart";
+import About from "./pages/About/About";
 
 function App() {
   const [cart, setCart] = useState(() => {
@@ -11,13 +13,22 @@ function App() {
     return localCart ? JSON.parse(localCart) : [];
   });
 
+  const [isCartOpen, setCartOpen] = useState(true);
+
   console.log(cart);
   return (
     <Router>
-      <Header />
+      <Header setCartOpen={setCartOpen} isCartOpen={isCartOpen} cart={cart} />
+      <ShoppingCart
+        cart={cart}
+        setCart={setCart}
+        setCartOpen={setCartOpen}
+        isCartOpen={isCartOpen}
+      />
       <Routes>
         <Route path="/" element={<HomePage cart={cart} setCart={setCart} />} />
         <Route path="/Menu" element={<Menu cart={cart} setCart={setCart} />} />
+        <Route path="/About" element={<About />} />
       </Routes>
     </Router>
   );

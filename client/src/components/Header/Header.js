@@ -3,7 +3,19 @@ import "./Header.css";
 import { NavLink } from "react-router-dom";
 import PersonSharpIcon from "@mui/icons-material/PersonSharp";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
-function Header() {
+
+function Header({ setCartOpen, isCartOpen, cart }) {
+  const handleCartOpen = () => {
+    setCartOpen(!isCartOpen);
+  };
+
+  const calculateTotalQuantity = () => {
+    return cart.reduce(
+      (totalQuantity, item) => totalQuantity + item.quantity,
+      0
+    );
+  };
+
   return (
     <div>
       <nav className="nav-bar">
@@ -23,7 +35,12 @@ function Header() {
           <NavLink to="/Account">
             <PersonSharpIcon id="account-btn" />
           </NavLink>
-          <ShoppingCartSharpIcon />
+          <div className="cart-icon">
+            <ShoppingCartSharpIcon id="cart-btn" onClick={handleCartOpen} />
+            {calculateTotalQuantity() > 0 && (
+              <div className="cart-total">{calculateTotalQuantity()}</div>
+            )}
+          </div>
         </div>
       </nav>
     </div>

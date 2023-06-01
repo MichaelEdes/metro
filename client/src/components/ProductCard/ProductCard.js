@@ -10,11 +10,32 @@ function ProductCard({
   image,
   cart,
   setCart,
+  quantity,
 }) {
   const addToCart = () => {
-    const product = { title, description, calories, allergens, price, image };
-    setCart([...cart, product]);
+    const productIndex = cart.findIndex((product) => product.title === title);
+
+    if (productIndex !== -1) {
+      const newCart = [...cart];
+      newCart[productIndex].quantity++;
+      setCart(newCart);
+      localStorage.setItem("cart", JSON.stringify(newCart));
+    } else {
+      const product = {
+        title,
+        description,
+        calories,
+        allergens,
+        price,
+        image,
+        quantity: 1,
+      };
+      const newCart = [...cart, product];
+      setCart(newCart);
+      localStorage.setItem("cart", JSON.stringify(newCart));
+    }
   };
+
   return (
     <div className="product-card">
       <img className="product-card-image" src={image} alt={title} />
@@ -24,7 +45,8 @@ function ProductCard({
           <p>{description}</p>
           <p>Calories: {calories} Kcal</p>
           <p>Allergens: {allergens.join(", ")}</p>
-          <p id="price">{price}</p>
+          <p id="price">£{price}</p>
+          <p>{quantity}</p>
         </div>
         <div>
           <button onClick={addToCart}>Add To Cart</button>

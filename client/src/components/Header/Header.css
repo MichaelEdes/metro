@@ -8,8 +8,8 @@
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   box-sizing: border-box;
-  padding: 2rem;
   z-index: 10000;
+  padding: 0 2rem;
   color: white;
   background-color: black;
 }
@@ -66,4 +66,24 @@
 
 #account-btn:hover {
   color: #ffd800;
+}
+
+.cart-icon {
+  position: relative;
+}
+
+.cart-total {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -10px;
+  right: -10px;
+  z-index: 100;
+  background-color: #ffd800;
+  font-size: smaller;
+  border-radius: 100%;
+  color: black;
 }
