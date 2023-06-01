@@ -46,6 +46,7 @@
   flex-direction: column;
   gap: 20px;
   height: 70%;
+  max-height: 80%;
   padding: 1rem 0;
   overflow-y: scroll;
 }
@@ -90,8 +91,10 @@
 .checkout {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
-  padding: 1rem 0;
+  height: 10%;
+  padding: 2rem 0;
 }
 
 .is-active {
