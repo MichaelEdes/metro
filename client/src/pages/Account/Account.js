@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Tab, Tabs, Box } from "@mui/material";
 import axios from "axios";
 import "./Account.css";
@@ -62,9 +62,9 @@ function Account() {
         alert(
           `Checkout completed. Thank you for your order ${
             user.name
-          }! \nOrder Total: £${calculateTotal().toFixed(
+          }! \n\nOrder Total: £${calculateTotal().toFixed(
             2
-          )} \n\nYou Ordered: ${cart.map(
+          )} \nYou Ordered: ${cart.map(
             (item) => `\n${item.quantity} x ${item.title}`
           )}`
         );

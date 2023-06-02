@@ -36,7 +36,9 @@ function OrderTable() {
   useEffect(() => {
     const fetchAllOrders = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/orders`);
+        const res = await axios.get(
+          `http://localhost:8800/orders?user_id=${user.id}`
+        );
         setOrders(res.data);
       } catch (err) {
         console.log(err);
