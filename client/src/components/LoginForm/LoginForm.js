@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import "./LoginForm.css";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
@@ -54,11 +54,7 @@ function LoginForm() {
           email,
           password,
         });
-        const {
-          success,
-          name: responseName,
-          email: responseEmail,
-        } = response.data;
+        const { success } = response.data;
         if (success) {
           navigate("/Account");
         } else {

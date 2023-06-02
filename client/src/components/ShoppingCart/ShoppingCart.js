@@ -1,32 +1,14 @@
 import React, { useContext } from "react";
 import "./ShoppingCart.css";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import CancelIcon from "@mui/icons-material/Cancel";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../UserContext";
-import { CartContext } from "../../CartContext"; // Import the context
+import { CartContext } from "../../CartContext";
 import CartItem from "../CartItem/CartItem";
 
 function ShoppingCart({ setCartOpen, isCartOpen }) {
-  const { cart, setCart } = useContext(CartContext); // Access the context
+  const { cart } = useContext(CartContext);
 
   const navigate = useNavigate();
-
-  const changeQuantity = (index, event) => {
-    const newCart = [...cart];
-    newCart[index].quantity = event.target.value;
-    setCart(newCart);
-  };
-
-  const deleteItem = (index) => {
-    const newCart = [...cart];
-    if (newCart[index].quantity > 1) {
-      newCart[index].quantity--;
-    } else {
-      newCart.splice(index, 1);
-    }
-    setCart(newCart);
-  };
 
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + item.quantity * item.price, 0);

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Tab, Tabs, Box } from "@mui/material";
 import "./Account.css";
 import { CartContext } from "../../CartContext";
