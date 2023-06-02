@@ -72,13 +72,13 @@ function Account() {
       <div className="account-details">
         <div className="account-img-container">
           <img
-            src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80"
+            src="https://t3.ftcdn.net/jpg/02/99/04/20/360_F_299042079_vGBD7wIlSeNl7vOevWHiL93G4koMM967.jpg"
             alt="User"
           />
         </div>
         <div>
           {user && <h1 id="username">{user.name}</h1>}
-          <p id="email">johnsmith@appleseed.com</p>
+          {user && <p id="email">{user.email}</p>}
         </div>
       </div>
       <div className="account-list-options">
