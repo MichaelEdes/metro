@@ -18,6 +18,7 @@ function Menu({ cart, setCart }) {
       {content.map((item) => (
         <ProductCard
           key={item.id}
+          id={item.id}
           title={item.title}
           description={item.description}
           calories={item.calories}

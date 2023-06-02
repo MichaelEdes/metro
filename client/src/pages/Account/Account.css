@@ -125,3 +125,12 @@ cart-items-box-list {
   align-items: center;
   justify-content: space-evenly;
 }
+
+#username {
+  text-transform: capitalize;
+  margin-bottom: -10px;
+}
+
+#email {
+  color: rgb(179, 174, 174);
+}

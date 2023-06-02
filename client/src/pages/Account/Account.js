@@ -1,27 +1,30 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Tab, Tabs, Box } from "@mui/material";
+import axios from "axios";
 import "./Account.css";
 import { CartContext } from "../../CartContext";
 import CartItem from "../../components/CartItem/CartItem";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../UserContext";
+import OrderTable from "../../components/OrderTable/OrderTable";
 
 function Account() {
-  const { cart } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
   const [tabValue, setTabValue] = useState(0);
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
+  const { setUser, user } = useContext(UserContext);
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
   const handleLogout = () => {
-    setUser(null); // you can now call this function
-    // Clear user from localStorage
+    setUser(null);
     localStorage.setItem("user", 0);
     navigate("/");
+    window.location.reload();
   };
+
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + item.quantity * item.price, 0);
   };
@@ -31,6 +34,37 @@ function Account() {
       (totalQuantity, item) => totalQuantity + item.quantity,
       0
     );
+  };
+
+  const handleCheckout = () => {
+    const orderData = {
+      user_id: user.id,
+      order_date: new Date().toISOString(),
+      total: calculateTotal(),
+      items: cart.map((item) => {
+        if (item.id) {
+          return {
+            item_id: item.id,
+            quantity: item.quantity,
+          };
+        } else {
+          return {
+            item_id: 1,
+            quantity: item.quantity,
+          };
+        }
+      }),
+    };
+
+    axios
+      .post("http://localhost:8800/orders", orderData)
+      .then((response) => {
+        alert("Thank you for your order!");
+        setCart([]);
+      })
+      .catch((error) => {
+        console.error("Error creating order:", error);
+      });
   };
 
   return (
@@ -43,8 +77,8 @@ function Account() {
           />
         </div>
         <div>
-          <h1>John Smith</h1>
-          <p>johnsmith@appleseed.com</p>
+          {user && <h1 id="username">{user.name}</h1>}
+          <p id="email">johnsmith@appleseed.com</p>
         </div>
       </div>
       <div className="account-list-options">
@@ -74,13 +108,15 @@ function Account() {
                 <div>{calculateTotalQuantity()} Items</div>
                 <div>£{calculateTotal().toFixed(2)}</div>
               </div>
-              <div id="complete-order-btn">COMPLETE ORDER</div>
+              <div id="complete-order-btn" onClick={handleCheckout}>
+                COMPLETE ORDER
+              </div>
             </div>
           </Box>
         )}
         {tabValue === 1 && (
           <Box className="cart-item-box" p={3}>
-            No Previous Orders
+            {user && <OrderTable />}
           </Box>
         )}
       </div>

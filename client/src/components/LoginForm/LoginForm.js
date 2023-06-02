@@ -63,6 +63,7 @@ function LoginForm() {
           localStorage.setItem("user", JSON.stringify(response.data.user));
           console.log("User after login:", response.data.user);
           navigate("/Account");
+          window.location.reload();
         } else {
           alert("Incorrect email or password");
         }
@@ -89,6 +90,7 @@ function LoginForm() {
           localStorage.setItem("user", JSON.stringify(response.data.user));
           console.log("User after registration:", response.data.user);
           navigate("/Account");
+          window.location.reload();
         } else {
           alert("Registration failed");
         }

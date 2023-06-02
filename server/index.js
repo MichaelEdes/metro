@@ -33,8 +33,26 @@ app.get("/items", (req, res) => {
   });
 });
 
+app.get("/orders", (req, res) => {
+  const { user_id } = req.query;
+  const q = `
+    SELECT o.*, GROUP_CONCAT(oi.item_id) AS item_ids, GROUP_CONCAT(oi.quantity) AS quantities
+    FROM orders AS o
+    LEFT JOIN order_items AS oi ON o.id = oi.order_id
+    WHERE o.user_id = ?
+    GROUP BY o.id
+  `;
+  db.query(q, [user_id], (err, data) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.json(err);
+    }
+    return res.json(data);
+  });
+});
+
 app.get("/order_items", (req, res) => {
-  const q = "SELECT * FROM ORDER_ITEMS;";
+  const q = "SELECT * FROM order_items;";
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -50,31 +68,33 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/orders", (req, res) => {
-  const { userId, total, items } = req.body;
+  const { user_id, total, items } = req.body;
 
-  const orderQuery =
-    "INSERT INTO orders (order_date, total, user_id) VALUES (NOW(), ?, ?)";
+  // Insert the new order into the orders table
+  const q1 =
+    "INSERT INTO orders (user_id, total, order_date) VALUES (?, ?, NOW())";
+  db.query(q1, [user_id, total], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ success: false });
+    }
 
-  // Insert order into the orders table
-  db.query(orderQuery, [total, userId], (err, data) => {
-    if (err) return res.status(500).json(err);
+    const order_id = result.insertId;
 
-    const orderID = data.insertId;
-
-    // Insert order items into the order_items table
-    const orderItemsQuery =
-      "INSERT INTO order_items (order_id, sandwich_id, sandwich_name, quantity, price) VALUES ?";
-    const orderItemsValues = items.map((item) => [
-      orderID,
-      item.id,
-      item.name,
+    // Insert the order items into the order_items table
+    const orderItemValues = items.map((item) => [
+      order_id,
+      item.item_id,
       item.quantity,
-      item.price,
     ]);
+    const q2 = "INSERT INTO order_items (order_id, item_id, quantity) VALUES ?";
+    db.query(q2, [orderItemValues], (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ success: false });
+      }
 
-    db.query(orderItemsQuery, [orderItemsValues], (err, data) => {
-      if (err) return res.status(500).json(err);
-      return res.json("Order submitted successfully");
+      return res.status(200).json({ success: true, order_id });
     });
   });
 });

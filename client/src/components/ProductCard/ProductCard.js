@@ -2,6 +2,7 @@ import React from "react";
 import "./ProductCard.css";
 
 function ProductCard({
+  id,
   title,
   description,
   calories,
@@ -22,6 +23,7 @@ function ProductCard({
       localStorage.setItem("cart", JSON.stringify(newCart));
     } else {
       const product = {
+        id,
         title,
         description,
         calories,
