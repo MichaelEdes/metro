@@ -44,7 +44,7 @@ function ProductCard({
           <h1>{title}</h1>
           <p>{description}</p>
           <p>Calories: {calories} Kcal</p>
-          <p>Allergens: {allergens.join(", ")}</p>
+          <p>Allergens: {allergens}</p>
           <p id="price">£{price}</p>
           <p>{quantity}</p>
         </div>

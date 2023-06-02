@@ -1,15 +1,105 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./LoginForm.css";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { AuthContext } from "../../AuthContext";
 
 function LoginForm() {
+  const { login } = useContext(AuthContext);
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [signUp, setSignUp] = useState(true);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isNameValid, setNameValid] = useState(false);
+  const [isEmailValid, setEmailValid] = useState(false);
+  const [isPasswordValid, setPasswordValid] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    navigate("/Account");
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateForm = () => {
+    if (signUp) {
+      return (
+        isNameValid && isEmailValid && validateEmail(email) && isPasswordValid
+      );
+    } else {
+      return isEmailValid && isPasswordValid;
+    }
+  };
+
+  const handleLogin = async () => {
+    if (validateForm()) {
+      try {
+        const response = await axios.post("http://localhost:8800/login", {
+          email,
+          password,
+        });
+        const { success } = response.data;
+        if (success) {
+          login(); // Set the global login status
+          navigate("/Account");
+        } else {
+          alert("Incorrect email or password");
+        }
+      } catch (error) {
+        console.error("Axios error:", error);
+      }
+    } else {
+      console.error("Invalid form data");
+    }
+  };
+
+  const handleRegister = async () => {
+    if (validateForm() && isNameValid) {
+      try {
+        const response = await axios.post("http://localhost:8800/register", {
+          name,
+          email,
+          password,
+        });
+        const { success } = response.data;
+        if (success) {
+          login(); // Set the global login status
+          navigate("/Account");
+        } else {
+          alert("Registration failed");
+        }
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 409) ||
+          error.response.status === 500
+        ) {
+          alert("Email already exists");
+        } else {
+          console.error("Axios error:", error);
+        }
+      }
+    } else {
+      console.error("Invalid form data");
+    }
+  };
+
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    setName(value);
+    setNameValid(value !== "");
+  };
+
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    setEmailValid(value !== "" && validateEmail(value));
+  };
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    setPasswordValid(value !== "");
   };
 
   return (
@@ -28,13 +118,13 @@ function LoginForm() {
         <div className="form-content">
           <div className="login-form-options">
             <h2
-              className={signUp && `form-is-active`}
+              className={signUp ? `form-is-active` : ""}
               onClick={() => setSignUp(true)}
             >
               Sign Up
             </h2>
             <h2
-              className={!signUp && `form-is-active`}
+              className={signUp ? "" : `form-is-active`}
               onClick={() => setSignUp(false)}
             >
               Login
@@ -42,17 +132,52 @@ function LoginForm() {
           </div>
           {!signUp ? (
             <section>
-              <input type="text" placeholder="Email" />
-              <input type="password" placeholder="Password" />
+              <div className="placeholder" />
+              <input
+                type="text"
+                placeholder="Email"
+                value={email}
+                onChange={handleEmailChange}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
             </section>
           ) : (
             <section>
-              <input type="text" placeholder="Name" />
-              <input type="email" placeholder="Email" />
-              <input type="password" placeholder="Password" />
+              <input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={handleNameChange}
+              />
+              <input
+                type="text"
+                placeholder="Email"
+                value={email}
+                onChange={handleEmailChange}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
             </section>
           )}
-          <button onClick={handleLogin}>{signUp ? "Sign Up" : "Login"}</button>
+          <button
+            className="login-btn"
+            disabled={
+              (signUp && !(isNameValid && isEmailValid && isPasswordValid)) ||
+              (!signUp && !(isEmailValid && isPasswordValid))
+            }
+            onClick={signUp ? handleRegister : handleLogin}
+          >
+            {signUp ? "Sign Up" : "Login"}
+          </button>
         </div>
       </div>
     </div>

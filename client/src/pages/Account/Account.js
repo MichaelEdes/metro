@@ -28,11 +28,15 @@ function Account() {
       0
     );
   };
+
   return (
     <div className="account-page-container">
       <div className="account-details">
         <div className="account-img-container">
-          <img src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80" />
+          <img
+            src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80"
+            alt="User"
+          />
         </div>
         <div>
           <h1>John Smith</h1>
@@ -50,13 +54,13 @@ function Account() {
         >
           <Tab label="Current Cart" />
           <Tab label="Previous Orders" />
-          <Tab id="logout" label="Logout" />
+          <Tab id="logout" label="Logout" onClick={handleLogout} />
         </Tabs>
         {tabValue === 0 && (
           <Box className="cart-item-box" p={3}>
             <div className="items-container">
               {cart.map((item, index) => (
-                <div className="cart-items-box-list">
+                <div key={index} className="cart-items-box-list">
                   <CartItem key={index} index={index} {...item} />
                 </div>
               ))}
@@ -75,7 +79,6 @@ function Account() {
             No Previous Orders
           </Box>
         )}
-        {tabValue === 2 && handleLogout()}
       </div>
     </div>
   );

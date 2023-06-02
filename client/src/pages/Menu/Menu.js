@@ -1,18 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./Menu.css";
-import { content } from "../../types/food";
 import ProductCard from "../../components/ProductCard/ProductCard";
 
 function Menu({ cart, setCart }) {
+  const [content, setContent] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8800/items")
+      .then((response) => setContent(response.data))
+      .catch((error) => console.error("Axios error:", error));
+  }, []);
+
   return (
     <div className="menu-container">
-      {content.map((item, index) => (
+      {content.map((item) => (
         <ProductCard
-          key={index}
+          key={item.id}
           title={item.title}
           description={item.description}
           calories={item.calories}
-          allergens={item.allergens}
+          allergens={item.allergens ? item.allergens.split("") : []}
           price={item.price}
           image={item.image}
           cart={cart}

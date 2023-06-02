@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Slider from "react-animated-slider";
 import "react-animated-slider/build/horizontal.css";
 import "./ImageCarousel.css";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import { content } from "../../types/food";
 
 function ImageCarousel({ cart, setCart }) {
+  const [content, setContent] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8800/items")
+      .then((response) => setContent(response.data))
+      .catch((error) => console.error("Axios error:", error));
+  }, []);
+
   const addToCart = (product) => {
     let newCart = [...cart];
     let itemInCart = newCart.find((item) => product.title === item.title);
@@ -41,7 +50,9 @@ function ImageCarousel({ cart, setCart }) {
             <PriorityHighIcon id="icon" />
             <span>Price: {item.price}</span>
             <span>Calories: {item.calories}Kcals</span>
-            <span>Allergens: {item.allergens.join(", ")}</span>
+            <span>
+              Allergens: {item.allergens ? item.allergens.split("") : []}
+            </span>
           </section>
         </div>
       ))}

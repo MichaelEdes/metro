@@ -8,59 +8,27 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-let db;
-
-if (process.env.JAWSDB_URL) {
-  // Heroku deployment
-  const dbUrl = url.parse(process.env.JAWSDB_URL);
-  const auth = dbUrl.auth.split(":");
-
-  db = mysql.createConnection({
-    host: dbUrl.hostname,
-    user: auth[0],
-    password: auth[1],
-    database: dbUrl.pathname.substr(1),
-  });
-
-  console.log("connected");
-} else {
-  // Local development
-  db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "smrc_schema",
-  });
-}
-
-app.get("/products", (req, res) => {
-  const q = "SELECT * FROM products";
-  db.query(q, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
+const db = mysql.createConnection({
+  host: "localhost",
+  port: 3306, // Specify the port if it's not the default one (3306)
+  user: "root",
+  password: "", // Replace with your actual password
+  database: "metro_data",
 });
 
-app.get("/device_repair", (req, res) => {
-  const q = "SELECT * FROM DEVICE_REPAIR;";
+app.get("/items", (req, res) => {
+  const q = `
+    SELECT i.*, GROUP_CONCAT(a.allergen_name) AS allergens
+    FROM items AS i
+    LEFT JOIN item_allergens AS ia ON i.id = ia.item_id
+    LEFT JOIN allergens AS a ON ia.allergen_id = a.id
+    GROUP BY i.id
+  `;
   db.query(q, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/device_repair/:id", (req, res) => {
-  const q = "SELECT * FROM DEVICE_REPAIR WHERE id = ?;";
-  db.query(q, [req.params.id], (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/orders", (req, res) => {
-  const q = "SELECT * FROM ORDERS;";
-  db.query(q, (err, data) => {
-    if (err) return res.json(err);
+    if (err) {
+      console.error("Database error:", err);
+      return res.json(err);
+    }
     return res.json(data);
   });
 });
@@ -81,80 +49,27 @@ app.get("/users", (req, res) => {
   });
 });
 
-app.post("/device_repair", (req, res) => {
-  const {
-    first_name,
-    surname,
-    email,
-    device_type,
-    device_make,
-    device_model,
-    problem,
-    other_notes,
-  } = req.body;
-
-  const q =
-    "INSERT INTO DEVICE_REPAIR (first_name, surname, email, date, device_type, device_make, device_model, problem, other_notes) VALUES (?, ?, ?, NOW(), ?, ?, ?, ?, ?)";
-
-  db.query(
-    q,
-    [
-      first_name,
-      surname,
-      email,
-      device_type,
-      device_make,
-      device_model,
-      problem,
-      other_notes,
-    ],
-    (err, data) => {
-      if (err) return res.json(err);
-      return res.json("Repair reported successfully");
-    }
-  );
-});
-
-app.delete("/device_repair/:id", (req, res) => {
-  const q = "DELETE FROM DEVICE_REPAIR WHERE id = ?";
-
-  db.query(q, [req.params.id], (err, result) => {
-    if (err) {
-      return res.status(500).json(err);
-    }
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "No record found with this ID" });
-    }
-
-    return res.json({ message: "Deleted successfully" });
-  });
-});
-``;
-
 app.post("/orders", (req, res) => {
-  const { userName, total, items } = req.body;
+  const { userId, total, items } = req.body;
 
   const orderQuery =
-    "INSERT INTO orders (order_date, total, user_name) VALUES (NOW(), ?, ?)";
+    "INSERT INTO orders (order_date, total, user_id) VALUES (NOW(), ?, ?)";
 
   // Insert order into the orders table
-  db.query(orderQuery, [total, userName], (err, data) => {
+  db.query(orderQuery, [total, userId], (err, data) => {
     if (err) return res.status(500).json(err);
 
     const orderID = data.insertId;
 
     // Insert order items into the order_items table
     const orderItemsQuery =
-      "INSERT INTO order_items (order_id, product_id, product_name, quantity, price, color, memory) VALUES ?";
+      "INSERT INTO order_items (order_id, sandwich_id, sandwich_name, quantity, price) VALUES ?";
     const orderItemsValues = items.map((item) => [
       orderID,
       item.id,
       item.name,
       item.quantity,
       item.price,
-      item.color,
-      item.memory,
     ]);
 
     db.query(orderItemsQuery, [orderItemsValues], (err, data) => {
@@ -164,32 +79,45 @@ app.post("/orders", (req, res) => {
   });
 });
 
-app.post("/users/login", (req, res) => {
-  const { username, password } = req.body;
-  const q = "SELECT * FROM users WHERE username = ?";
-
-  db.query(q, [username], (err, results) => {
-    if (err) return res.status(500).json(err);
-
-    if (results.length === 0) {
-      return res.status(404).json({ message: "User not found" });
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  const q = "SELECT * FROM users WHERE email = ?";
+  db.query(q, [email], (err, data) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.json(err);
     }
 
-    const user = results[0];
+    if (data.length > 0) {
+      const user = data[0];
+      const passwordMatch = bcrypt.compareSync(password, user.password); // Compare passwords
 
-    bcrypt.compare(password, user.password, (err, result) => {
-      if (err) return res.status(500).json(err);
-
-      if (!result) {
-        return res.status(401).json({ message: "Incorrect password" });
+      if (passwordMatch) {
+        return res.json({ success: true });
+      } else {
+        return res.json({ success: false });
       }
-
-      return res.json({ message: "Logged in successfully" });
-    });
+    } else {
+      return res.json({ success: false });
+    }
   });
 });
 
-const port = process.env.PORT || 8800;
+app.post("/register", (req, res) => {
+  const { name, email, password } = req.body;
+  const hashedPassword = bcrypt.hashSync(password, 10); // Hash the password
+
+  const q = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+  db.query(q, [name, email, hashedPassword], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ success: false });
+    }
+    return res.json({ success: true });
+  });
+});
+
+const port = 8800;
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
