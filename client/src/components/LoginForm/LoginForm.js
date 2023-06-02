@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./LoginForm.css";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { UserContext } from "../../UserContext";
 
 function LoginForm() {
   const [signUp, setSignUp] = useState(true);
+  const { setUser } = useContext(UserContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -56,6 +58,10 @@ function LoginForm() {
         });
         const { success } = response.data;
         if (success) {
+          setUser(response.data.user);
+          // Store the user in local storage
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          console.log("User after login:", response.data.user);
           navigate("/Account");
         } else {
           alert("Incorrect email or password");
@@ -78,6 +84,10 @@ function LoginForm() {
         });
         const { success } = response.data;
         if (success) {
+          setUser(response.data.user);
+          // Store the user in local storage
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          console.log("User after registration:", response.data.user);
           navigate("/Account");
         } else {
           alert("Registration failed");

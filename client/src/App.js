@@ -9,6 +9,7 @@ import About from "./pages/About/About";
 import Login from "./pages/Login/Login";
 import { CartContext } from "./CartContext";
 import Account from "./pages/Account/Account";
+import { UserContext } from "./UserContext";
 
 function App() {
   const [cart, setCart] = useState(() => {
@@ -21,31 +22,50 @@ function App() {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
+  const [user, setUser] = useState(() => {
+    const localUser = localStorage.getItem("user");
+    return localUser ? JSON.parse(localUser) : null;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
-    <CartContext.Provider value={{ cart, setCart }}>
-      <Router>
-        <Header setCartOpen={setCartOpen} isCartOpen={isCartOpen} cart={cart} />
-        <ShoppingCart
-          cart={cart}
-          setCart={setCart}
-          setCartOpen={setCartOpen}
-          isCartOpen={isCartOpen}
-        />
-        <Routes>
-          <Route
-            path="/"
-            element={<HomePage cart={cart} setCart={setCart} />}
+    <UserContext.Provider value={{ user, setUser }}>
+      <CartContext.Provider value={{ cart, setCart }}>
+        <Router>
+          <Header
+            setCartOpen={setCartOpen}
+            isCartOpen={isCartOpen}
+            cart={cart}
           />
-          <Route
-            path="/Menu"
-            element={<Menu cart={cart} setCart={setCart} />}
+          <ShoppingCart
+            cart={cart}
+            setCart={setCart}
+            setCartOpen={setCartOpen}
+            isCartOpen={isCartOpen}
           />
-          <Route path="/About" element={<About />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Account" element={<Account />} />
-        </Routes>
-      </Router>
-    </CartContext.Provider>
+          <Routes>
+            <Route
+              path="/"
+              element={<HomePage cart={cart} setCart={setCart} />}
+            />
+            <Route
+              path="/Menu"
+              element={<Menu cart={cart} setCart={setCart} />}
+            />
+            <Route path="/About" element={<About />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Account" element={<Account />} />
+          </Routes>
+        </Router>
+      </CartContext.Provider>
+    </UserContext.Provider>
   );
 }
 

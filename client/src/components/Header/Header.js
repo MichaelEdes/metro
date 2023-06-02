@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.css";
 import { NavLink } from "react-router-dom";
 import PersonSharpIcon from "@mui/icons-material/PersonSharp";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 
 function Header({ setCartOpen, isCartOpen, cart }) {
+  const [user, setUser] = useState(() => {
+    const localUser = localStorage.getItem("user");
+    return localUser ? JSON.parse(localUser) : null;
+  });
+
   const handleCartOpen = () => {
     setCartOpen(!isCartOpen);
   };
@@ -32,7 +37,7 @@ function Header({ setCartOpen, isCartOpen, cart }) {
           <NavLink to="/About">ABOUT</NavLink>
         </div>
         <div className="options">
-          <NavLink to="/Login">
+          <NavLink to={user !== null ? "/Account" : "/Login"}>
             <PersonSharpIcon id="account-btn" />
           </NavLink>
           <div className="cart-icon">

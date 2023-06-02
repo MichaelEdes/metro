@@ -93,7 +93,8 @@ app.post("/login", (req, res) => {
       const passwordMatch = bcrypt.compareSync(password, user.password); // Compare passwords
 
       if (passwordMatch) {
-        return res.json({ success: true });
+        const { id, name, email } = user;
+        return res.json({ success: true, user: { id, name, email } });
       } else {
         return res.json({ success: false });
       }
@@ -109,11 +110,24 @@ app.post("/register", (req, res) => {
 
   const q = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
   db.query(q, [name, email, hashedPassword], (err, result) => {
-    if (err) {
+    if (!err) {
+      db.query(
+        "SELECT * FROM users WHERE id = ?",
+        result.insertId,
+        (error, results) => {
+          if (error) {
+            console.error("Database error:", error);
+            return res.status(500).json({ success: false });
+          }
+          const user = results[0];
+          const { id, name, email } = user;
+          return res.json({ success: true, user: { id, name, email } });
+        }
+      );
+    } else {
       console.error("Database error:", err);
       return res.status(500).json({ success: false });
     }
-    return res.json({ success: true });
   });
 });
 

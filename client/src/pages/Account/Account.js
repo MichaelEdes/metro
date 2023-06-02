@@ -4,20 +4,24 @@ import "./Account.css";
 import { CartContext } from "../../CartContext";
 import CartItem from "../../components/CartItem/CartItem";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../UserContext";
 
 function Account() {
   const { cart } = useContext(CartContext);
   const [tabValue, setTabValue] = useState(0);
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
   const handleLogout = () => {
+    setUser(null); // you can now call this function
+    // Clear user from localStorage
+    localStorage.setItem("user", 0);
     navigate("/");
   };
-
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + item.quantity * item.price, 0);
   };

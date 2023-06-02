@@ -96,3 +96,7 @@
   transition: 0.5s;
   right: 0;
 }
+
+.disabled {
+  display: none;
+}

@@ -1,14 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./ShoppingCart.css";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../CartContext";
 import CartItem from "../CartItem/CartItem";
 
 function ShoppingCart({ setCartOpen, isCartOpen }) {
   const { cart } = useContext(CartContext);
-
+  const [user, setUser] = useState(() => {
+    const localUser = localStorage.getItem("user");
+    return localUser ? JSON.parse(localUser) : null;
+  });
   const navigate = useNavigate();
+  const location = useLocation();
+  const isAccountPage = location.pathname === "/Account";
 
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + item.quantity * item.price, 0);
@@ -22,11 +27,16 @@ function ShoppingCart({ setCartOpen, isCartOpen }) {
   };
 
   const handleCheckout = () => {
-    navigate("/Account");
+    setCartOpen(!isCartOpen);
+    if (user !== null) {
+      navigate("/Account");
+    } else {
+      navigate("/Login");
+    }
   };
 
   return (
-    <>
+    <div className={isAccountPage ? "disabled" : ""}>
       <div
         onClick={() => setCartOpen(!isCartOpen)}
         className={`overlay ${!isCartOpen && "is-active overlay-active"}`}
@@ -59,7 +69,7 @@ function ShoppingCart({ setCartOpen, isCartOpen }) {
           <button onClick={handleCheckout}>Checkout</button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
