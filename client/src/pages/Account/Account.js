@@ -59,7 +59,15 @@ function Account() {
     axios
       .post("http://localhost:8800/orders", orderData)
       .then((response) => {
-        alert("Thank you for your order!");
+        alert(
+          `Checkout completed. Thank you for your order ${
+            user.name
+          }! \nOrder Total: £${calculateTotal().toFixed(
+            2
+          )} \n\nYou Ordered: ${cart.map(
+            (item) => `\n${item.quantity} x ${item.title}`
+          )}`
+        );
         setCart([]);
       })
       .catch((error) => {
