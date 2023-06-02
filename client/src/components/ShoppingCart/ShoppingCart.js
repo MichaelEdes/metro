@@ -8,7 +8,6 @@ import { CartContext } from "../../CartContext"; // Import the context
 import CartItem from "../CartItem/CartItem";
 
 function ShoppingCart({ setCartOpen, isCartOpen }) {
-  const { isLoggedIn } = useContext(UserContext);
   const { cart, setCart } = useContext(CartContext); // Access the context
 
   const navigate = useNavigate();
@@ -41,12 +40,7 @@ function ShoppingCart({ setCartOpen, isCartOpen }) {
   };
 
   const handleCheckout = () => {
-    setCartOpen(true);
-    if (isLoggedIn) {
-      navigate("/Checkout");
-    } else {
-      navigate("/Login");
-    }
+    navigate("/Account");
   };
 
   return (

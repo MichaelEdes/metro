@@ -3,10 +3,8 @@ import "./LoginForm.css";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../../AuthContext";
 
 function LoginForm() {
-  const { login } = useContext(AuthContext);
   const [signUp, setSignUp] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -15,6 +13,24 @@ function LoginForm() {
   const [isEmailValid, setEmailValid] = useState(false);
   const [isPasswordValid, setPasswordValid] = useState(false);
   const navigate = useNavigate();
+
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    setName(value);
+    setNameValid(value !== "");
+  };
+
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    setEmailValid(value !== "" && validateEmail(value));
+  };
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    setPasswordValid(value !== "");
+  };
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -38,9 +54,12 @@ function LoginForm() {
           email,
           password,
         });
-        const { success } = response.data;
+        const {
+          success,
+          name: responseName,
+          email: responseEmail,
+        } = response.data;
         if (success) {
-          login(); // Set the global login status
           navigate("/Account");
         } else {
           alert("Incorrect email or password");
@@ -63,7 +82,6 @@ function LoginForm() {
         });
         const { success } = response.data;
         if (success) {
-          login(); // Set the global login status
           navigate("/Account");
         } else {
           alert("Registration failed");
@@ -81,24 +99,6 @@ function LoginForm() {
     } else {
       console.error("Invalid form data");
     }
-  };
-
-  const handleNameChange = (e) => {
-    const value = e.target.value;
-    setName(value);
-    setNameValid(value !== "");
-  };
-
-  const handleEmailChange = (e) => {
-    const value = e.target.value;
-    setEmail(value);
-    setEmailValid(value !== "" && validateEmail(value));
-  };
-
-  const handlePasswordChange = (e) => {
-    const value = e.target.value;
-    setPassword(value);
-    setPasswordValid(value !== "");
   };
 
   return (
