@@ -7,7 +7,6 @@ import { AuthContext } from "../../AuthContext";
 
 function LoginForm() {
   const { login } = useContext(AuthContext);
-  const [isLoggedIn, setLoggedIn] = useState(false);
   const [signUp, setSignUp] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

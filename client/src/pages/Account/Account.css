@@ -1,7 +1,7 @@
 .account-page-container {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   height: 90vh;
   width: 100%;
   margin: 10vh auto 0 auto;
@@ -28,7 +28,7 @@
 
 .account-list-options {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   margin: 2rem 0 0 0;
   width: 100%;
   align-items: center;
@@ -50,7 +50,7 @@
   width: auto;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   height: 60vh;
   width: clamp(40%, 20vw, 80rem);
   overflow: scroll;

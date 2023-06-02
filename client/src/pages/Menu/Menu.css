@@ -8,7 +8,7 @@
   gap: 1vw;
   padding: 0;
   box-sizing: border-box;
-  justify-items: start;
+  justify-items: flex-start;
   padding: 2rem;
 }
 
