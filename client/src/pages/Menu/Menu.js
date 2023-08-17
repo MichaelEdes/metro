@@ -8,7 +8,7 @@ function Menu({ cart, setCart }) {
 
   useEffect(() => {
     axios
-      .get("https://metro-sandwich-shop-d63dbc6934dc.herokuapp.com/items")
+      .get("http://localhost:8800/items")
       .then((response) => setContent(response.data))
       .catch((error) => console.error("Axios error:", error));
   }, []);

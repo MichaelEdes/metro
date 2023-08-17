@@ -8,37 +8,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-);
-
-let db;
-
-if (process.env.JAWSDB_URL) {
-  // Heroku deployment
-  const dbUrl = url.parse(process.env.JAWSDB_URL);
-  const auth = dbUrl.auth.split(":");
-
-  db = mysql.createConnection({
-    host: dbUrl.hostname,
-    user: auth[0],
-    password: auth[1],
-    database: dbUrl.pathname.substr(1),
-  });
-
-  console.log("connected");
-} else {
-  // Local development
-  db = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: "",
-    database: "metro_data",
-  });
-}
+const db = mysql.createConnection({
+  host: "localhost",
+  port: 3306, // Specify the port if it's not the default one (3306)
+  user: "root",
+  password: "", // Replace with your actual password
+  database: "metro_data",
+});
 
 app.get("/items", (req, res) => {
   const q = `
@@ -175,12 +151,8 @@ app.post("/register", (req, res) => {
   });
 });
 
-const port = process.env.PORT || 5000;
+const port = 8800;
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-});
-
-app.get("/", (req, res) => {
-  res.send("Welcome to Metro Sandwich Shop!");
 });
