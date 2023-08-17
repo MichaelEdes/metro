@@ -10,7 +10,7 @@ function ImageCarousel({ cart, setCart }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/items")
+      .get("https://metro-sandwich-shop-d63dbc6934dc.herokuapp.com/items")
       .then((response) => setContent(response.data))
       .catch((error) => console.error("Axios error:", error));
   }, []);
