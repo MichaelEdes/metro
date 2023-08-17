@@ -9,11 +9,11 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-  host: "localhost",
-  port: 3306, // Specify the port if it's not the default one (3306)
-  user: "root",
-  password: "", // Replace with your actual password
-  database: "metro_data",
+  host: "clwxydcjair55xn0.chr7pe7iynqr.eu-west-1.rds.amazonaws.com",
+  port: 3306,
+  user: "cjxwtcio9yyew93e",
+  password: "fbpfoxs7pkxkj8cx",
+  database: "rlvbb13o9iy55h3t",
 });
 
 app.get("/items", (req, res) => {
