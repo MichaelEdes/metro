@@ -8,7 +8,7 @@ function Menu({ cart, setCart }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8800/items")
+      .get("http://localhost:5000/items")
       .then((response) => setContent(response.data))
       .catch((error) => console.error("Axios error:", error));
   }, []);
