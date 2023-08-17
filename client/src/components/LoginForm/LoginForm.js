@@ -52,10 +52,13 @@ function LoginForm() {
   const handleLogin = async () => {
     if (validateForm()) {
       try {
-        const response = await axios.post("http://localhost:8800/login", {
-          email,
-          password,
-        });
+        const response = await axios.post(
+          "https://metro-sandwich-shop-2745404b654d.herokuapp.com/login",
+          {
+            email,
+            password,
+          }
+        );
         const { success } = response.data;
         if (success) {
           setUser(response.data.user);
@@ -78,11 +81,14 @@ function LoginForm() {
   const handleRegister = async () => {
     if (validateForm() && isNameValid) {
       try {
-        const response = await axios.post("http://localhost:8800/register", {
-          name,
-          email,
-          password,
-        });
+        const response = await axios.post(
+          "https://metro-sandwich-shop-2745404b654d.herokuapp.com/register",
+          {
+            name,
+            email,
+            password,
+          }
+        );
         const { success } = response.data;
         if (success) {
           setUser(response.data.user);

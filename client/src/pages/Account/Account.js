@@ -57,7 +57,10 @@ function Account() {
     };
 
     axios
-      .post("http://localhost:8800/orders", orderData)
+      .post(
+        "https://metro-sandwich-shop-2745404b654d.herokuapp.com/orders",
+        orderData
+      )
       .then((response) => {
         alert(
           `Checkout completed. Thank you for your order ${

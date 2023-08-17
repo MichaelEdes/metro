@@ -37,7 +37,7 @@ function OrderTable() {
     const fetchAllOrders = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8800/orders?user_id=${user.id}`
+          `https://metro-sandwich-shop-2745404b654d.herokuapp.com/orders?user_id=${user.id}`
         );
         setOrders(res.data);
       } catch (err) {
@@ -47,7 +47,9 @@ function OrderTable() {
 
     const fetchAllOrderItems = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/order_items`);
+        const res = await axios.get(
+          `https://metro-sandwich-shop-2745404b654d.herokuapp.com/order_items`
+        );
         setOrderItems(res.data);
       } catch (err) {
         console.log(err);

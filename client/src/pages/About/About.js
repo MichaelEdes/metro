@@ -3,7 +3,10 @@ import "./About.css";
 function About() {
   return (
     <div className="about-container">
-      <img src="https://scontent.flba3-2.fna.fbcdn.net/v/t39.30808-6/298705679_185346067243372_3301061101714882663_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=a26aad&_nc_ohc=siTW9CZX-d4AX-aiF5m&_nc_ht=scontent.flba3-2.fna&oh=00_AfBL1RHpEYMWgZGWQpWFl3MKeIBPWRt5IOkoUeu5SLB93w&oe=647D8966" />
+      <img
+        src="https://10619-2.s.cdn12.com/rests/original/108_513799217.jpg"
+        alt="sandwich shop"
+      />
       <div className="about-content">
         <h1>About Metro Sandwich Co.</h1>
         <p>
