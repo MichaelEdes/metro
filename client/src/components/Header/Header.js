@@ -3,8 +3,11 @@ import "./Header.css";
 import { NavLink } from "react-router-dom";
 import PersonSharpIcon from "@mui/icons-material/PersonSharp";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
+import BurgerIcon from "../BurgerIcon/BurgerIcon";
 
 function Header({ setCartOpen, isCartOpen, cart }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   const [user, setUser] = useState(() => {
     const localUser = localStorage.getItem("user");
     return localUser ? JSON.parse(localUser) : null;
@@ -21,6 +24,8 @@ function Header({ setCartOpen, isCartOpen, cart }) {
     );
   };
 
+  console.log(isOpen);
+
   return (
     <div>
       <nav className="nav-bar">
@@ -31,10 +36,19 @@ function Header({ setCartOpen, isCartOpen, cart }) {
             </i>
           </a>
         </div>
-        <div className="page-links">
-          <NavLink to="/">HOME</NavLink>
-          <NavLink to="/Menu">MENU</NavLink>
-          <NavLink to="/About">ABOUT</NavLink>
+        <div className={`page-links ${isOpen ? "open" : ""}`}>
+          <NavLink to="/" onClick={() => setIsOpen(false)}>
+            HOME
+          </NavLink>
+          <NavLink to="/Menu" onClick={() => setIsOpen(false)}>
+            MENU
+          </NavLink>
+          <NavLink to="/About" onClick={() => setIsOpen(false)}>
+            ABOUT
+          </NavLink>
+        </div>
+        <div className="burger-icon">
+          <BurgerIcon setIsOpen={setIsOpen} isOpen={isOpen} />
         </div>
         <div className="options">
           <NavLink to={user !== null ? "/Account" : "/Login"}>

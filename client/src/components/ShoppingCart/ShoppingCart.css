@@ -1,6 +1,6 @@
 .cart-container {
   position: fixed;
-  right: -100vw;
+  right: -100%;
   top: 0;
   height: 100vh;
   background-color: white;
